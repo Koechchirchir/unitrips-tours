@@ -5,11 +5,15 @@ services:
     buildCommand: npm install
     startCommand: npm start
     envVars:
+      - key: MPESA_ENV
+        sync: false
       - key: MPESA_CONSUMER_KEY
         sync: false
       - key: MPESA_CONSUMER_SECRET
         sync: false
       - key: MPESA_SHORTCODE
+        sync: false
+      - key: MPESA_TILL_NUMBER
         sync: false
       - key: MPESA_PASSKEY
         sync: false
