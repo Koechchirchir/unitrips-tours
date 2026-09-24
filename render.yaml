@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: unitrips-mpesa-api
+    runtime: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: MPESA_CONSUMER_KEY
+        sync: false
+      - key: MPESA_CONSUMER_SECRET
+        sync: false
+      - key: MPESA_SHORTCODE
+        sync: false
+      - key: MPESA_PASSKEY
+        sync: false
+      - key: MPESA_TRANSACTION_TYPE
+        sync: false
+      - key: MPESA_CALLBACK_URL
+        sync: false
