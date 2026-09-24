@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="UniTrips & Tours creates affordable, memorable trips for students across Kenya.">
+	<title>UniTrips & Tours | Go Further Together</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+	<style>
+		:root {
+			--night: #112a2c;
+			--deep: #174548;
+			--teal: #277d72;
+			--mint: #d9f0dc;
+			--coral: #ee7554;
+			--sun: #ffc857;
+			--cream: #fffaf1;
+			--sand: #f4ead9;
+			--ink: #183436;
+			--muted: #668080;
+			--line: rgba(24, 52, 54, .15);
+		}
+
+		* { box-sizing: border-box; }
+		html { scroll-behavior: smooth; }
+		body { margin: 0; color: var(--ink); background: var(--cream); font-family: "DM Sans", sans-serif; }
+		body.no-scroll { overflow: hidden; }
+		a { color: inherit; text-decoration: none; }
+		button, input, select { font: inherit; }
+		.container { width: min(1180px, calc(100% - 48px)); margin: 0 auto; }
+
+		header { position: absolute; z-index: 5; top: 0; left: 0; right: 0; color: white; }
+		.nav { display: flex; align-items: center; justify-content: space-between; padding: 24px 0; }
+		.brand { display: flex; align-items: center; gap: 11px; font-family: Syne, sans-serif; font-weight: 800; letter-spacing: -.05em; font-size: 1.1rem; }
+		.brand-mark { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px 10px 10px 2px; color: var(--night); background: var(--sun); font-size: .9rem; transform: rotate(-6deg); }
+		.brand-logo { width: 68px; height: 68px; object-fit: contain; border-radius: 12px; padding: 4px; background: white; box-shadow: 0 5px 18px rgba(0,0,0,.16); }
+		.brand span:last-child { color: var(--sun); }
+		nav { display: flex; align-items: center; gap: 28px; font-size: .9rem; }
+		nav a { opacity: .85; }
+		nav a:hover { color: var(--sun); opacity: 1; }
+		.nav-cta { padding: 11px 18px; border: 1px solid rgba(255,255,255,.5); border-radius: 999px; opacity: 1; }
+
+		.hero { position: relative; min-height: 740px; display: flex; align-items: center; color: white; overflow: hidden; background: var(--deep); }
+		.hero::before { content: ""; position: absolute; z-index: 0; inset: 0; background: linear-gradient(90deg, rgba(17,42,44,.92) 0%, rgba(17,42,44,.7) 43%, rgba(17,42,44,.18) 100%), url("https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Lake_Ellis_and_sorrounding_vegetation.jpg/1280px-Lake_Ellis_and_sorrounding_vegetation.jpg") center/cover; }
+		.hero::after { content: ""; position: absolute; z-index: .5; top: 50%; right: 7%; width: min(36vw, 470px); height: min(36vw, 470px); opacity: .16; background: url("logo.jpg") center/contain no-repeat; transform: translateY(-50%) rotate(-8deg); filter: grayscale(1) brightness(2); }
+		.hero-content { position: relative; z-index: 1; max-width: 680px; padding: 115px 0 90px; }
+		.kicker { display: flex; align-items: center; gap: 10px; color: var(--sun); text-transform: uppercase; font-size: .73rem; font-weight: 700; letter-spacing: .16em; }
+		.kicker::before { content: ""; width: 31px; height: 2px; background: var(--sun); }
+		h1, h2, h3 { margin: 0; font-family: Syne, sans-serif; letter-spacing: -.065em; line-height: .98; }
+		h1 { max-width: 710px; margin: 25px 0 26px; font-size: clamp(3.5rem, 8vw, 7.5rem); }
+		h1 em { color: var(--sun); font-style: normal; }
+		.hero-copy { max-width: 525px; color: rgba(255,255,255,.8); line-height: 1.7; font-size: 1.08rem; }
+		.hero-buttons { display: flex; align-items: center; gap: 17px; margin-top: 35px; }
+		.button { display: inline-flex; justify-content: center; align-items: center; gap: 8px; border: 0; border-radius: 999px; padding: 15px 23px; font-weight: 700; cursor: pointer; transition: transform .2s, background .2s; }
+		.button:hover { transform: translateY(-2px); }
+		.button-primary { color: var(--night); background: var(--sun); }
+		.button-primary:hover { background: #ffd875; }
+		.button-ghost { color: white; border: 1px solid rgba(255,255,255,.5); }
+		.button-ghost:hover { border-color: white; background: rgba(255,255,255,.1); }
+		.hero-note { display: flex; gap: 24px; margin-top: 52px; color: rgba(255,255,255,.72); font-size: .8rem; }
+		.hero-note strong { display: block; color: var(--sun); font: 800 1.35rem Syne, sans-serif; }
+		.hero-note span { display: block; margin-top: 5px; }
+
+		section { padding: 112px 0; }
+		.section-top { display: flex; justify-content: space-between; align-items: end; gap: 30px; margin-bottom: 46px; }
+		.section-top h2 { max-width: 620px; font-size: clamp(2.5rem, 5vw, 5rem); }
+		.section-top p { max-width: 350px; color: var(--muted); line-height: 1.7; }
+		.eyebrow { margin-bottom: 14px; color: var(--coral); text-transform: uppercase; font-size: .72rem; font-weight: 700; letter-spacing: .14em; }
+
+		.trip-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+		.trip-card { overflow: hidden; border: 1px solid var(--line); border-radius: 12px; background: white; }
+		.trip-image { position: relative; height: 235px; overflow: hidden; }
+		.trip-image img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; }
+		.trip-card:hover .trip-image img { transform: scale(1.06); }
+		.trip-tag { position: absolute; top: 15px; left: 15px; padding: 8px 11px; border-radius: 999px; color: var(--night); background: var(--sun); font-size: .71rem; font-weight: 700; }
+		.trip-content { padding: 23px; }
+		.trip-meta { display: flex; justify-content: space-between; color: var(--muted); font-size: .78rem; }
+		.trip-card h3 { margin: 15px 0 9px; font-size: 1.6rem; }
+		.trip-card p { min-height: 49px; margin: 0; color: var(--muted); font-size: .9rem; line-height: 1.55; }
+		.trip-bottom { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 23px; padding-top: 17px; border-top: 1px solid var(--line); }
+		.price { font: 700 1.25rem Syne, sans-serif; }
+		.price small { display: block; color: var(--muted); font: 400 .7rem "DM Sans", sans-serif; }
+		.small-button { padding: 11px 14px; color: white; background: var(--teal); border: 0; border-radius: 999px; font-size: .8rem; font-weight: 700; cursor: pointer; }
+		.small-button:hover { background: var(--night); }
+
+		.feature-band { background: var(--mint); }
+		.feature-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 75px; align-items: center; }
+		.poster { position: relative; min-height: 500px; padding: 38px; overflow: hidden; border-radius: 14px; color: white; background: var(--night) url("https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&w=900&q=85") center/cover; }
+		.poster::after { content: ""; position: absolute; inset: 0; background: linear-gradient(140deg, rgba(17,42,44,.95), rgba(17,42,44,.12)); }
+		.poster > img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+		.poster-content { position: relative; z-index: 1; }
+		.poster-label { color: var(--sun); font-size: .7rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; }
+		.poster h3 { max-width: 300px; margin-top: 25px; font-size: clamp(2.5rem, 5vw, 4.5rem); }
+		.poster-date { display: inline-block; margin-top: 40px; padding: 13px 17px; color: var(--night); background: var(--sun); border-radius: 8px; font-weight: 700; }
+		.feature-copy h2 { font-size: clamp(2.6rem, 5vw, 4.8rem); }
+		.feature-copy > p { max-width: 500px; color: var(--muted); line-height: 1.7; }
+		.check-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; margin: 30px 0; padding: 0; list-style: none; }
+		.check-list li { display: flex; gap: 9px; color: var(--ink); font-size: .9rem; }
+		.check-list li::before { content: "+"; display: grid; place-items: center; flex: 0 0 21px; width: 21px; height: 21px; border-radius: 50%; color: white; background: var(--teal); font-weight: 700; }
+
+		.steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+		.step { padding: 27px; border-top: 3px solid var(--coral); background: var(--sand); }
+		.step-number { color: var(--coral); font: 800 2.4rem Syne, sans-serif; }
+		.step h3 { margin: 25px 0 9px; font-size: 1.45rem; }
+		.step p { margin: 0; color: var(--muted); line-height: 1.6; font-size: .9rem; }
+
+		.booking-section { color: white; background: var(--night); }
+		.booking-section .section-top p { color: rgba(255,255,255,.65); }
+		.booking-layout { display: grid; grid-template-columns: 1fr .75fr; gap: 50px; align-items: start; }
+		.booking-form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 28px; border-radius: 12px; background: white; color: var(--ink); }
+		.field { display: flex; flex-direction: column; gap: 7px; }
+		.field.full { grid-column: 1 / -1; }
+		.field label { font-size: .77rem; font-weight: 700; }
+		.field input, .field select { width: 100%; padding: 13px 14px; border: 1px solid var(--line); border-radius: 7px; outline: 0; color: var(--ink); background: var(--cream); }
+		.field input:focus, .field select:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(39,125,114,.12); }
+		.booking-summary { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: center; margin-top: 4px; padding-top: 18px; border-top: 1px solid var(--line); }
+		.total-label { color: var(--muted); font-size: .78rem; }
+		.total { display: block; margin-top: 3px; font: 800 1.7rem Syne, sans-serif; }
+		.booking-form .button { color: var(--night); background: var(--sun); }
+		.booking-info { padding-top: 15px; }
+		.booking-info h3 { font-size: 1.8rem; }
+		.booking-info p { color: rgba(255,255,255,.68); line-height: 1.7; }
+		.mpesa-box { margin-top: 28px; padding: 19px; border: 1px solid rgba(255,255,255,.18); border-radius: 8px; }
+		.mpesa-box strong { color: var(--sun); }
+		.mpesa-box p { margin: 7px 0 0; font-size: .88rem; }
+		#formMessage { display: none; grid-column: 1 / -1; padding: 14px; border-radius: 7px; color: #1b5c3e; background: #d9f0dc; font-size: .86rem; line-height: 1.5; }
+
+		footer { padding: 37px 0; color: rgba(255,255,255,.7); background: #0c2022; font-size: .82rem; }
+		.footer-main { display: flex; justify-content: space-between; gap: 30px; }
+		.footer-brand { color: white; }
+		.footer-links { display: flex; gap: 20px; }
+
+		.modal { position: fixed; z-index: 20; inset: 0; display: none; place-items: center; padding: 20px; background: rgba(17,42,44,.75); }
+		.modal.open { display: grid; }
+		.modal-card { position: relative; width: min(500px, 100%); padding: 32px; border-radius: 13px; background: var(--cream); }
+		.modal-card h2 { font-size: 2.5rem; }
+		.modal-card p { color: var(--muted); line-height: 1.6; }
+		.close-modal { position: absolute; top: 15px; right: 17px; border: 0; color: var(--muted); background: transparent; font-size: 1.5rem; cursor: pointer; }
+		.modal-card .button { width: 100%; color: var(--night); background: var(--sun); }
+
+		@media (max-width: 800px) {
+			.container { width: min(100% - 32px, 600px); }
+			nav a:not(.nav-cta) { display: none; }
+			.brand-logo { width: 58px; height: 58px; }
+			.hero { min-height: 700px; }
+			.hero-content { padding-top: 140px; }
+			.section-top, .feature-grid, .booking-layout { display: block; }
+			.section-top p { margin-top: 21px; }
+			.trip-grid, .steps { grid-template-columns: 1fr; }
+			.trip-card:not(:first-child) { display: none; }
+			.poster { min-height: 390px; margin-bottom: 55px; }
+			.booking-info { margin-top: 40px; }
+			.footer-main { display: block; line-height: 1.8; }
+			.footer-links { margin-top: 15px; }
+		}
+
+		@media (max-width: 480px) {
+			.hero-buttons, .hero-note { flex-wrap: wrap; }
+			.hero-buttons .button { width: 100%; }
+			.check-list, .booking-form { grid-template-columns: 1fr; }
+			.field.full, .booking-summary, #formMessage { grid-column: auto; }
+			.booking-summary { display: block; }
+			.booking-summary .button { width: 100%; margin-top: 18px; }
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<div class="container nav">
+			<a class="brand" href="#top"><img class="brand-logo" src="logo.jpg" alt="UniTrips and Tours logo"><span>UniTrips <span>&</span> Tours</span></a>
+			<nav><a href="#trips">Trips</a><a href="#about">Why us</a><a href="#booking">How it works</a><a class="nav-cta" href="#booking">Book a slot</a></nav>
+		</div>
+	</header>
+
+	<main id="top">
+		<section class="hero">
+			<div class="container"><div class="hero-content">
+				<div class="kicker">Student trips, made simple</div>
+				<h1>Go further.<br><em>Together.</em></h1>
+				<p class="hero-copy">UniTrips & Tours creates affordable, unforgettable day trips and getaways for students in Kenya. Good friends, new places, zero stress.</p>
+				<div class="hero-buttons"><a class="button button-primary" href="#trips">Explore upcoming trips <span>-></span></a><a class="button button-ghost" href="#booking">Reserve a seat</a></div>
+				<div class="hero-note"><div><strong>01</strong><span>Trip coming up</span></div><div><strong>100%</strong><span>Student-friendly</span></div><div><strong>Kenya</strong><span>Made for exploring</span></div></div>
+			</div></div>
+		</section>
+
+		<section id="trips"><div class="container">
+			<div class="section-top"><div><div class="eyebrow">Pick your next memory</div><h2>Small trips.<br>Big stories.</h2></div><p>We plan the route, transport and little details. You bring your people, your camera and your sense of adventure.</p></div>
+			<div class="trip-grid">
+				<article class="trip-card"><div class="trip-image"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/97/Lake_Ellis_and_sorrounding_vegetation.jpg/1280px-Lake_Ellis_and_sorrounding_vegetation.jpg" alt="Lake Ellis and surrounding vegetation on Mount Kenya"><span class="trip-tag">First trip</span></div><div class="trip-content"><div class="trip-meta"><span>DAY TRIP</span><span>25 slots left</span></div><h3>Lake Ellis & Nithi Falls</h3><p>Fresh mountain air, beautiful water and the sound of Nithi Falls. Come make the first UniTrips memory with us.</p><div class="trip-bottom"><div class="price">KES 1,850<small>per person</small></div><button class="small-button book-trip" data-trip="Lake Ellis & Nithi Falls" data-price="1850">Book this trip</button></div></div></article>
+				<article class="trip-card"><div class="trip-image"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Nithi_falls_waterfall.jpg/960px-Nithi_falls_waterfall.jpg" alt="Nithi Falls waterfall on Mount Kenya"><span class="trip-tag">Real location</span></div><div class="trip-content"><div class="trip-meta"><span>WATERFALL</span><span>25 slots left</span></div><h3>Nithi Falls</h3><p>One trip, two beautiful stops. See the waterfall that gives this student adventure its name.</p><div class="trip-bottom"><div class="price">KES 1,850<small>per person</small></div><button class="small-button book-trip" data-trip="Lake Ellis & Nithi Falls" data-price="1850">Book this trip</button></div></div></article>
+				<article class="trip-card"><div class="trip-image"><img src="https://images.unsplash.com/photo-1530789253388-582c481c54b0?auto=format&fit=crop&w=900&q=85" alt="Traveller looking over a landscape"><span class="trip-tag">Your idea</span></div><div class="trip-content"><div class="trip-meta"><span>GROUP TRIP</span><span>Plan with us</span></div><h3>Make it yours</h3><p>Have a destination in mind? Get your class, campus group or friends together.</p><div class="trip-bottom"><div class="price">Custom<small>group pricing</small></div><a class="small-button" href="#booking">Talk to us</a></div></div></article>
+			</div>
+		</div></section>
+
+		<section class="feature-band" id="about"><div class="container"><div class="feature-grid">
+			<div class="poster"><img src="poster.jpg" alt="UniTrips and Tours Lake Ellis and Nithi Falls trip poster"><div class="poster-content"><div class="poster-label">Our first planned trip</div><h3>Lake Ellis & Nithi Falls</h3><a class="poster-date" href="https://www.youtube.com/results?search_query=Lake+Ellis+Nithi+Falls+Kenya" target="_blank" rel="noopener">Watch destination videos -></a></div></div>
+			<div class="feature-copy"><div class="eyebrow">Why UniTrips?</div><h2>Built by a student, for students.</h2><p>We know what makes a trip feel worth it: a fair price, an easy plan, a safe journey and enough space for the fun to happen naturally.</p><ul class="check-list"><li>Student-friendly prices</li><li>Clear trip schedules</li><li>Trusted transport partners</li><li>Friendly trip hosts</li><li>Simple M-Pesa payments</li><li>Real-time trip updates</li></ul><a class="button button-primary" href="#booking">Plan your seat</a></div>
+		</div></div></section>
+
+		<section><div class="container">
+			<div class="section-top"><div><div class="eyebrow">From idea to adventure</div><h2>Three easy steps.</h2></div><p>No complicated forms or long email chains. Pick a trip, make your payment and get ready to go.</p></div>
+			<div class="steps"><div class="step"><div class="step-number">01</div><h3>Choose your trip</h3><p>Find a trip that fits your calendar, budget and kind of weekend.</p></div><div class="step"><div class="step-number">02</div><h3>Reserve a seat</h3><p>Share your details so we can hold your slot and contact you with updates.</p></div><div class="step"><div class="step-number">03</div><h3>Pay via M-Pesa</h3><p>Use the Till or Paybill instructions we provide. Your confirmation follows.</p></div></div>
+		</div></section>
+
+		<section class="booking-section" id="booking"><div class="container">
+			<div class="section-top"><div><div class="eyebrow">Your next adventure starts here</div><h2>Reserve your<br>spot.</h2></div><p>Fill in your details and we will send the final trip information and M-Pesa payment instructions.</p></div>
+			<div class="booking-layout">
+				<form class="booking-form" id="bookingForm">
+					<div class="field full"><label for="trip">Choose a trip</label><select id="trip" required><option value="Lake Ellis & Nithi Falls" data-price="1850">Lake Ellis & Nithi Falls - KES 1,850</option><option value="Summit & Sunrise" data-price="3200">Summit & Sunrise - KES 3,200</option></select></div>
+					<div class="field"><label for="name">Your full name</label><input id="name" type="text" placeholder="e.g. Amina Wanjiku" required></div>
+					<div class="field"><label for="phone">M-Pesa phone number</label><input id="phone" type="tel" placeholder="07XX XXX XXX" required></div>
+					<div class="field"><label for="email">Email address</label><input id="email" type="email" placeholder="you@example.com" required></div>
+					<div class="field"><label for="seats">Number of seats</label><select id="seats"><option value="1">1 seat</option><option value="2">2 seats</option><option value="3">3 seats</option><option value="4">4 seats</option><option value="5">5 seats</option></select></div>
+					<div id="formMessage"></div>
+					<div class="booking-summary"><div><span class="total-label">Estimated total</span><span class="total" id="total">KES 1,850</span></div><button class="button" type="submit">Continue to payment -></button></div>
+				</form>
+				<div class="booking-info"><h3>How M-Pesa works</h3><p>After you submit your details, we will confirm your slot. Then use the official business number below to complete payment. Always wait for our confirmation before travelling.</p><div class="mpesa-box"><strong>M-Pesa payment details</strong><p>Buy Goods Till: <strong>1736684</strong><br>Reference: your name + trip<br><br>Lake Ellis & Nithi Falls has <strong>25 slots remaining</strong>.</p></div></div>
+			</div>
+		</div></section>
+	</main>
+
+	<footer><div class="container footer-main"><div><div class="brand footer-brand"><img class="brand-logo" src="logo.jpg" alt="UniTrips and Tours logo"><span>UniTrips <span>&</span> Tours</span></div><div>Small trips. Big stories. Made in Kenya.</div><div>Destination photos: Bett Duncan via Wikimedia Commons, CC BY-SA 4.0.</div></div><div class="footer-links"><a href="mailto:hello@unitrips.co.ke">Email us</a><a href="tel:+254700000000">Call us</a><a href="#top">Back to top</a></div></div></footer>
+
+	<div class="modal" id="modal"><div class="modal-card"><button class="close-modal" id="closeModal" aria-label="Close">x</button><div class="eyebrow">Booking request received</div><h2>You're on the list.</h2><p id="modalText">We have your request. UniTrips will contact you shortly with confirmation and M-Pesa payment instructions.</p><button class="button" id="modalDone">Done</button></div></div>
+
+	<script>
+		const tripSelect = document.getElementById('trip');
+		const seatsSelect = document.getElementById('seats');
+		const total = document.getElementById('total');
+		const form = document.getElementById('bookingForm');
+		const modal = document.getElementById('modal');
+		const formMessage = document.getElementById('formMessage');
+
+		function updateTotal() {
+			const price = Number(tripSelect.selectedOptions[0].dataset.price);
+			const seats = Number(seatsSelect.value);
+			total.textContent = `KES ${(price * seats).toLocaleString()}`;
+		}
+
+		tripSelect.addEventListener('change', updateTotal);
+		seatsSelect.addEventListener('change', updateTotal);
+
+		document.querySelectorAll('.book-trip').forEach(button => {
+			button.addEventListener('click', () => {
+				tripSelect.value = button.dataset.trip;
+				updateTotal();
+				document.getElementById('booking').scrollIntoView({ behavior: 'smooth' });
+			});
+		});
+
+		form.addEventListener('submit', event => {
+			event.preventDefault();
+			if (!form.checkValidity()) { form.reportValidity(); return; }
+			const name = document.getElementById('name').value.trim();
+			const trip = tripSelect.value;
+			const seats = seatsSelect.value;
+			formMessage.style.display = 'block';
+			formMessage.textContent = `Thanks, ${name}. Your request for ${seats} seat${seats === '1' ? '' : 's'} on ${trip} is ready. Use the M-Pesa details beside this form after UniTrips confirms availability.`;
+			formMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+		});
+
+		document.getElementById('closeModal').addEventListener('click', () => modal.classList.remove('open'));
+		document.getElementById('modalDone').addEventListener('click', () => modal.classList.remove('open'));
+		modal.addEventListener('click', event => { if (event.target === modal) modal.classList.remove('open'); });
+	</script>
+</body>
+</html>
