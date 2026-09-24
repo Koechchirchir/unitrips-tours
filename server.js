@@ -4,7 +4,9 @@ import express from 'express';
 
 const app = express();
 const port = Number(process.env.PORT || 3000);
-const darajaBaseUrl = 'https://sandbox.safaricom.co.ke';
+const darajaBaseUrl = process.env.MPESA_ENV === 'production'
+    ? 'https://api.safaricom.co.ke'
+    : 'https://sandbox.safaricom.co.ke';
 const payments = new Map();
 
 app.use(cors());
@@ -33,8 +35,12 @@ function formatTimestamp() {
 
 function normalizePhone(phone) {
     const digits = String(phone || '').replace(/\D/g, '');
-    if (digits.startsWith('07') && digits.length === 10) return `254${digits.slice(1)}`;
-    if (digits.startsWith('2547') && digits.length === 12) return digits;
+    if ((digits.startsWith('07') || digits.startsWith('01')) && digits.length === 10) {
+        return `254${digits.slice(1)}`;
+    }
+    if ((digits.startsWith('2547') || digits.startsWith('2541')) && digits.length === 12) {
+        return digits;
+    }
     return null;
 }
 
@@ -51,7 +57,7 @@ async function getAccessToken() {
 }
 
 app.get('/health', (_request, response) => {
-    response.json({ ok: true, service: 'unitrips-mpesa-sandbox' });
+    response.json({ ok: true, service: 'unitrips-mpesa-server', env: process.env.MPESA_ENV || 'sandbox' });
 });
 
 app.post('/api/stkpush', async (request, response) => {
@@ -60,12 +66,15 @@ app.post('/api/stkpush', async (request, response) => {
         const amount = Number(request.body.amount);
         const accountReference = String(request.body.accountReference || 'UniTrips booking').slice(0, 12);
 
-        if (!phone) return response.status(400).json({ error: 'Use a valid Kenyan number such as 0712345678.' });
+        if (!phone) return response.status(400).json({ error: 'Use a valid Kenyan number such as 0712345678 or 0112345678.' });
         if (!Number.isInteger(amount) || amount < 1) return response.status(400).json({ error: 'Amount must be a positive whole number.' });
 
         const shortcode = requiredEnv('MPESA_SHORTCODE');
         const passkey = requiredEnv('MPESA_PASSKEY');
         const callbackUrl = requiredEnv('MPESA_CALLBACK_URL');
+        const transactionType = process.env.MPESA_TRANSACTION_TYPE || 'CustomerBuyGoodsOnline';
+        const partyB = process.env.MPESA_TILL_NUMBER || shortcode;
+
         const timestamp = formatTimestamp();
         const password = Buffer.from(`${shortcode}${passkey}${timestamp}`).toString('base64');
         const token = await getAccessToken();
@@ -73,10 +82,10 @@ app.post('/api/stkpush', async (request, response) => {
             BusinessShortCode: shortcode,
             Password: password,
             Timestamp: timestamp,
-            TransactionType: process.env.MPESA_TRANSACTION_TYPE || 'CustomerPayBillOnline',
+            TransactionType: transactionType,
             Amount: amount,
             PartyA: phone,
-            PartyB: shortcode,
+            PartyB: partyB,
             PhoneNumber: phone,
             CallBackURL: callbackUrl,
             AccountReference: accountReference,
@@ -120,5 +129,5 @@ app.post('/api/mpesa/callback', (request, response) => {
 });
 
 app.listen(port, () => {
-    console.log(`UniTrips M-Pesa sandbox server running at http://localhost:${port}`);
+    console.log(`UniTrips M-Pesa server running at http://localhost:${port}`);
 });
