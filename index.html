@@ -232,11 +232,23 @@
 		const form = document.getElementById('bookingForm');
 		const modal = document.getElementById('modal');
 		const formMessage = document.getElementById('formMessage');
+		const apiBaseUrl = window.UNITRIPS_API_BASE_URL || 'https://unitrips-tours.onrender.com';
 
 		function updateTotal() {
 			const price = Number(tripSelect.selectedOptions[0].dataset.price);
 			const seats = Number(seatsSelect.value);
 			total.textContent = `KES ${(price * seats).toLocaleString()}`;
+		}
+
+		async function waitForPayment(checkoutRequestId) {
+			for (let attempt = 0; attempt < 30; attempt += 1) {
+				await new Promise(resolve => setTimeout(resolve, 2000));
+				const response = await fetch(`${apiBaseUrl}/api/payment-status/${encodeURIComponent(checkoutRequestId)}`);
+				if (!response.ok) continue;
+				const payment = await response.json();
+				if (payment.status !== 'pending') return payment;
+			}
+			return { status: 'timeout' };
 		}
 
 		tripSelect.addEventListener('change', updateTotal);
@@ -250,15 +262,48 @@
 			});
 		});
 
-		form.addEventListener('submit', event => {
+		form.addEventListener('submit', async event => {
 			event.preventDefault();
 			if (!form.checkValidity()) { form.reportValidity(); return; }
 			const name = document.getElementById('name').value.trim();
+			const phone = document.getElementById('phone').value.trim();
 			const trip = tripSelect.value;
 			const seats = seatsSelect.value;
+			const amount = Number(tripSelect.selectedOptions[0].dataset.price) * Number(seats);
+			const submitButton = form.querySelector('button[type="submit"]');
+			submitButton.disabled = true;
+			submitButton.textContent = 'Sending STK Push...';
 			formMessage.style.display = 'block';
-			formMessage.textContent = `Thanks, ${name}. Your request for ${seats} seat${seats === '1' ? '' : 's'} on ${trip} is ready. Use the M-Pesa details beside this form after UniTrips confirms availability.`;
-			formMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+			formMessage.style.background = '#fff4d6';
+			formMessage.style.color = '#6c4a00';
+			formMessage.textContent = `Sending a KES ${amount.toLocaleString()} payment request to ${phone}...`;
+			try {
+				const response = await fetch(`${apiBaseUrl}/api/stkpush`, {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify({ phone, amount, accountReference: `${name} ${trip}`.slice(0, 12) })
+				});
+				const data = await response.json();
+				if (!response.ok) throw new Error(data.error || 'The STK Push could not be sent.');
+				formMessage.textContent = `STK Push sent to ${phone}. Waiting for payment confirmation...`;
+				const payment = await waitForPayment(data.checkoutRequestId);
+				if (payment.status === 'paid') {
+					formMessage.style.background = '#d9f0dc';
+					formMessage.style.color = '#1b5c3e';
+					formMessage.textContent = `Payment confirmed. Your ${seats} seat${seats === '1' ? '' : 's'} for ${trip} is reserved.`;
+					return;
+				}
+				if (payment.status === 'timeout') throw new Error('We are still waiting for payment confirmation. Check your M-Pesa messages or contact UniTrips.');
+				throw new Error(payment.resultDescription || 'The M-Pesa payment was not completed.');
+			} catch (error) {
+				formMessage.style.background = '#ffe1dc';
+				formMessage.style.color = '#8b2c1d';
+				formMessage.textContent = `${error.message} For the local test, make sure the M-Pesa server is running on port 3000.`;
+			} finally {
+				submitButton.disabled = false;
+				submitButton.textContent = 'Continue to payment ->';
+				formMessage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+			}
 		});
 
 		document.getElementById('closeModal').addEventListener('click', () => modal.classList.remove('open'));
