@@ -2,8 +2,10 @@ services:
   - type: web
     name: unitrips-mpesa-api
     runtime: node
+    rootDir: mpesa-server
     buildCommand: npm install
     startCommand: npm start
+    healthCheckPath: /health
     envVars:
       - key: MPESA_ENV
         sync: false
@@ -21,3 +23,9 @@ services:
         sync: false
       - key: MPESA_CALLBACK_URL
         sync: false
+
+  - type: web
+    name: unitrips-frontend
+    runtime: static
+    buildCommand: echo "no build needed"
+    staticPublishPath: .

@@ -149,7 +149,6 @@
 			.section-top, .feature-grid, .booking-layout { display: block; }
 			.section-top p { margin-top: 21px; }
 			.trip-grid, .steps { grid-template-columns: 1fr; }
-			.trip-card:not(:first-child) { display: none; }
 			.poster { min-height: 390px; margin-bottom: 55px; }
 			.booking-info { margin-top: 40px; }
 			.footer-main { display: block; line-height: 1.8; }
@@ -208,7 +207,7 @@
 			<div class="section-top"><div><div class="eyebrow">Your next adventure starts here</div><h2>Reserve your<br>spot.</h2></div><p>Fill in your details and we will send the final trip information and M-Pesa payment instructions.</p></div>
 			<div class="booking-layout">
 				<form class="booking-form" id="bookingForm">
-					<div class="field full"><label for="trip">Choose a trip</label><select id="trip" required><option value="Lake Ellis & Nithi Falls" data-price="1850">Lake Ellis & Nithi Falls - KES 1,850</option><option value="Summit & Sunrise" data-price="3200">Summit & Sunrise - KES 3,200</option></select></div>
+					<div class="field full"><label for="trip">Choose a trip</label><select id="trip" required><option value="Lake Ellis & Nithi Falls" data-price="1850">Lake Ellis & Nithi Falls - KES 1,850</option></select></div>
 					<div class="field"><label for="name">Your full name</label><input id="name" type="text" placeholder="e.g. Amina Wanjiku" required></div>
 					<div class="field"><label for="phone">M-Pesa phone number</label><input id="phone" type="tel" placeholder="07XX XXX XXX" required></div>
 					<div class="field"><label for="email">Email address</label><input id="email" type="email" placeholder="you@example.com" required></div>
@@ -223,7 +222,7 @@
 
 	<footer><div class="container footer-main"><div><div class="brand footer-brand"><img class="brand-logo" src="logo.jpg" alt="UniTrips and Tours logo"><span>UniTrips <span>&</span> Tours</span></div><div>Small trips. Big stories. Made in Kenya.</div><div>Destination photos: Bett Duncan via Wikimedia Commons, CC BY-SA 4.0.</div></div><div class="footer-links"><a href="mailto:hello@unitrips.co.ke">Email us</a><a href="tel:+254700000000">Call us</a><a href="#top">Back to top</a></div></div></footer>
 
-	<div class="modal" id="modal"><div class="modal-card"><button class="close-modal" id="closeModal" aria-label="Close">x</button><div class="eyebrow">Booking request received</div><h2>You're on the list.</h2><p id="modalText">We have your request. UniTrips will contact you shortly with confirmation and M-Pesa payment instructions.</p><button class="button" id="modalDone">Done</button></div></div>
+	<div class="modal" id="modal"><div class="modal-card"><button class="close-modal" id="closeModal" aria-label="Close this dialog"><span aria-hidden="true">&times;</span></button><div class="eyebrow">Booking request received</div><h2>You're on the list.</h2><p id="modalText">We have your request. UniTrips will contact you shortly with confirmation and M-Pesa payment instructions.</p><button class="button" id="modalDone">Done</button></div></div>
 
 	<script>
 		const tripSelect = document.getElementById('trip');
@@ -232,7 +231,7 @@
 		const form = document.getElementById('bookingForm');
 		const modal = document.getElementById('modal');
 		const formMessage = document.getElementById('formMessage');
-		const apiBaseUrl = window.UNITRIPS_API_BASE_URL || 'https://unitrips-tours.onrender.com';
+		const apiBaseUrl = window.UNITRIPS_API_BASE_URL || 'https://unitrips-mpesa-api.onrender.com';
 
 		function updateTotal() {
 			const price = Number(tripSelect.selectedOptions[0].dataset.price);
